@@ -30,6 +30,9 @@ class TimerViewModel : ViewModel() {
     var remainingMillis by mutableLongStateOf(0L)
         private set
 
+    var isCompleted by mutableStateOf(false)
+        private set
+
     // Initial milliseconds (will use for reset)
     private var initialMillis by mutableLongStateOf(0L)
 
@@ -47,6 +50,8 @@ class TimerViewModel : ViewModel() {
         // Convert hours, minutes, and seconds to milliseconds
         totalMillis = (selectedHour * 60 * 60 + selectedMinute * 60 + selectedSecond) * 1000L
 
+        isCompleted = false
+
         // Start coroutine that makes the timer count down
         if (totalMillis > 0) {
             isRunning = true
@@ -59,6 +64,7 @@ class TimerViewModel : ViewModel() {
                 }
 
                 isRunning = false
+                isCompleted = true
             }
         }
     }
@@ -67,6 +73,7 @@ class TimerViewModel : ViewModel() {
         if (isRunning) {
             timerJob?.cancel()
             isRunning = false
+            isCompleted = false
             remainingMillis = totalMillis // Reset to the starting value to what was selected originally
         }
     }
@@ -75,6 +82,7 @@ class TimerViewModel : ViewModel() {
         if (isRunning) {
             timerJob?.cancel()
             isRunning = false
+            isCompleted = false
             remainingMillis = 0
         }
     }

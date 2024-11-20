@@ -1,5 +1,7 @@
 package edu.farmingdale.threadsexample.countdowntimer
 
+import android.content.Context
+import android.media.MediaPlayer
 import android.util.Log
 import android.widget.NumberPicker
 import androidx.compose.animation.core.LinearEasing
@@ -30,10 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import edu.farmingdale.threadsexample.R
 import java.text.DecimalFormat
 import java.util.Locale
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import android.media.RingtoneManager
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun TimerScreen(
@@ -44,6 +49,7 @@ fun TimerScreen(
     val remainingMillis = timerViewModel.remainingMillis
     val totalMillis = timerViewModel.totalMillis
     val isRunning = timerViewModel.isRunning
+    val isCompleted = timerViewModel.isCompleted
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
@@ -74,6 +80,11 @@ fun TimerScreen(
                 fontSize = 55.sp,
                 color = if (remainingMillis < 1_000) Color.Red else Color.Black
             )
+
+            if (isCompleted) {
+                PlayCustomSound()
+            }
+
         }
         TimePicker(
             hour = timerViewModel.selectedHour,
@@ -110,6 +121,18 @@ fun TimerScreen(
     }
 }
 
+@Composable
+private fun PlayCustomSound() {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        try {
+            val mediaPlayer = MediaPlayer.create(context, R.raw.alarm) // Replace with your file name
+            mediaPlayer.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
 
 
 fun timerText(timeInMillis: Long): String {
