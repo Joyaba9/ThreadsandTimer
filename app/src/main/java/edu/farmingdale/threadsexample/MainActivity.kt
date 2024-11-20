@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ThreadsExampleTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    FibonacciDemoNoBgThrd()
+                    FibonacciDemoWithCoroutine()
                 }
             }
         }
