@@ -40,6 +40,11 @@ fun TimerScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel = viewModel()
 ) {
+
+    val remainingMillis = timerViewModel.remainingMillis
+    val totalMillis = timerViewModel.totalMillis
+    val isRunning = timerViewModel.isRunning
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = modifier
@@ -48,11 +53,26 @@ fun TimerScreen(
             contentAlignment = Alignment.Center
         ) {
             if (timerViewModel.isRunning) {
+                // using isRunning to trigger LaunchedEffect
 
+                val progress by animateFloatAsState(
+                    targetValue = remainingMillis.toFloat() / totalMillis,
+                    animationSpec = tween(
+                        durationMillis = 1000, //closest i can get to 1 second
+                        easing = LinearEasing
+                    )
+                )
+
+                CircularProgressIndicator(
+                    progress = progress,
+                    modifier = Modifier.size(250.dp),
+                    color = Color.Black
+                )
             }
             Text(
                 text = timerText(timerViewModel.remainingMillis),
                 fontSize = 55.sp,
+                color = if (remainingMillis < 1_000) Color.Red else Color.Black
             )
         }
         TimePicker(
