@@ -78,7 +78,9 @@ fun TimerScreen(
             Text(
                 text = timerText(timerViewModel.remainingMillis),
                 fontSize = 55.sp,
-                color = if (remainingMillis < 1_000) Color.Red else Color.Black
+                color = if (remainingMillis < 10000) Color.Red else Color.Black,
+                //bold if remainingMillis < 10000
+                fontWeight = if (remainingMillis < 10000) androidx.compose.ui.text.font.FontWeight.Bold else androidx.compose.ui.text.font.FontWeight.Normal
             )
 
             if (isCompleted) {
