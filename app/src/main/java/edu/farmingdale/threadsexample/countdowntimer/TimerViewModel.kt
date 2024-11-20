@@ -30,6 +30,9 @@ class TimerViewModel : ViewModel() {
     var remainingMillis by mutableLongStateOf(0L)
         private set
 
+    // Initial milliseconds (will use for reset)
+    private var initialMillis by mutableLongStateOf(0L)
+
     // Timer's running status
     var isRunning by mutableStateOf(false)
         private set
@@ -57,6 +60,14 @@ class TimerViewModel : ViewModel() {
 
                 isRunning = false
             }
+        }
+    }
+
+    fun resetTimer() {
+        if (isRunning) {
+            timerJob?.cancel()
+            isRunning = false
+            remainingMillis = totalMillis // Reset to the starting value to what was selected originally
         }
     }
 

@@ -88,6 +88,13 @@ fun TimerScreen(
             ) {
                 Text("Cancel")
             }
+            Button( //only appears if running
+                onClick = timerViewModel::resetTimer,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text("Reset Timer")
+            }
+
         } else {
             Button(
                 enabled = timerViewModel.selectedHour +
@@ -98,6 +105,7 @@ fun TimerScreen(
             ) {
                 Text("Start")
             }
+
         }
     }
 }
